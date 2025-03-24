@@ -14,6 +14,15 @@ class AlbumsService {
     await album.populate('creator', 'name picture')
     return album
   }
+
+  async archiveAlbum(albumId) {
+    const album = await this.getAlbumById(albumId)
+    //❌ await album.deleteOne()
+    // NOTE soft delete
+    album.archived = !album.archived
+    await album.save() // updates the database
+    return album
+  }
 }
 
 export const albumsService = new AlbumsService()
