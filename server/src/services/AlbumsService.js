@@ -1,4 +1,5 @@
 import { dbContext } from "../db/DbContext.js"
+import { BadRequest } from "../utils/Errors.js"
 
 class AlbumsService {
   async getAllAlbums() {
@@ -7,6 +8,9 @@ class AlbumsService {
   }
   async getAlbumById(albumId) {
     const album = await dbContext.Albums.findById(albumId).populate('creator', 'name picture')
+    if (album == null) {
+      throw new BadRequest(`Invalid album id: ${albumId}`)
+    }
     return album
   }
   async createAlbum(albumData) {
