@@ -6,8 +6,24 @@ export class AlbumsController extends BaseController {
   constructor() {
     super('api/albums')
     this.router
+      .get('', this.getAllAlbums)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createAlbum)
+  }
+
+
+  /**
+   * @param {import("express").Request} request
+   * @param {import("express").Response} response
+   * @param {import("express").NextFunction} next
+   */
+  async getAllAlbums(request, response, next) {
+    try {
+      const albums = await albumsService.getAllAlbums()
+      response.send(albums)
+    } catch (error) {
+      next(error)
+    }
   }
 
   /**
@@ -28,4 +44,5 @@ export class AlbumsController extends BaseController {
       next(error)
     }
   }
+
 }
