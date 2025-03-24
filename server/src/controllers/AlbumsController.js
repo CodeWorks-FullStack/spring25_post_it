@@ -70,7 +70,8 @@ export class AlbumsController extends BaseController {
   async archiveAlbum(request, response, next) {
     try {
       const albumId = request.params.albumId
-      const album = await albumsService.archiveAlbum(albumId)
+      const userInfo = request.userInfo
+      const album = await albumsService.archiveAlbum(albumId, userInfo)
       response.send(album)
     } catch (error) {
       next(error)

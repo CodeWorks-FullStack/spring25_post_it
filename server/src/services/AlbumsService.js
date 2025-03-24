@@ -1,5 +1,5 @@
 import { dbContext } from "../db/DbContext.js"
-import { BadRequest } from "../utils/Errors.js"
+import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class AlbumsService {
   async getAllAlbums() {
@@ -19,8 +19,11 @@ class AlbumsService {
     return album
   }
 
-  async archiveAlbum(albumId) {
+  async archiveAlbum(albumId, userInfo) {
     const album = await this.getAlbumById(albumId)
+    if (album.creatorId != userInfo.id) {
+      throw new Forbidden(`YOU CANNOT ARCHIVE ANOTHER USER'S ALBUM, ${userInfo.nickname.toUpperCase()}! 🚓🚓🚓`)
+    }
     //❌ await album.deleteOne()
     // NOTE soft delete
     album.archived = !album.archived
