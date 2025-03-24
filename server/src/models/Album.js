@@ -11,6 +11,7 @@ export const AlbumSchema = new Schema(
   },
   {
     timestamps: true,
+    // NOTE allows us to use virtuals and removes the __V
     toJSON: { virtuals: true, versionKey: false }
   }
 )
