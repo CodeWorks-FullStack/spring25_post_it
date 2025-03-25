@@ -75,7 +75,7 @@ async function getAlbums() {
       </div>
     </div>
     <div class="row">
-      <div v-for="category in categories" :key="category.name" class="col-6 col-md-3">
+      <div v-for="category in categories" :key="'filter ' + category.name" class="col-6 col-md-3">
         <div @click="filterCategory = category.name"
           class="p-4 fs-3 fw-bold text-center rounded mb-2 category-button text-shadow"
           :style="{ backgroundImage: `url(${category.backgroundImg})` }" role="button"
