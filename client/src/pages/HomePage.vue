@@ -1,6 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
 import AlbumCard from '@/components/AlbumCard.vue';
+import ModalComponent from '@/components/ModalComponent.vue';
 import { albumsService } from '@/services/AlbumsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -13,6 +14,8 @@ const albums = computed(() => {
 
   return AppState.albums.filter(album => album.category == filterCategory.value)
 })
+
+const account = computed(() => AppState.account)
 
 const filterCategory = ref('all')
 
@@ -75,8 +78,16 @@ async function getAlbums() {
       <div v-for="category in categories" :key="category.name" class="col-6 col-md-3">
         <div @click="filterCategory = category.name"
           class="p-4 fs-3 fw-bold text-center rounded mb-2 category-button text-shadow"
-          :style="{ backgroundImage: `url(${category.backgroundImg})` }" role="button">
+          :style="{ backgroundImage: `url(${category.backgroundImg})` }" role="button"
+          :title="`Display ${category.name} albums`">
           {{ category.name }}
+        </div>
+      </div>
+      <!-- TODO do a v-else for if they are not logged in -->
+      <div v-if="account" class="col-6 col-md-3">
+        <div class="p-4 fs-3 fw-bold text-center rounded mb-2 category-button text-shadow create-button" role="button"
+          title="Create new album" data-bs-toggle="modal" data-bs-target="#albumModal">
+          Create +
         </div>
       </div>
     </div>
@@ -91,11 +102,17 @@ async function getAlbums() {
       </div>
     </div>
   </div>
+
+  <ModalComponent />
 </template>
 
 <style scoped lang="scss">
 .category-button {
   background-size: cover;
   background-position: bottom;
+}
+
+.create-button {
+  background-image: url(https://images.unsplash.com/photo-1497211419994-14ae40a3c7a3?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3JlZW58ZW58MHwwfDB8fHwy);
 }
 </style>
