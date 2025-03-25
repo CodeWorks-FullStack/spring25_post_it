@@ -47,6 +47,10 @@ async function createAlbum() {
         placeholder="Album Cover Image" maxlength="1000" required>
       <label for="albumCoverImg">Album Cover Image</label>
     </div>
+    <div v-if="editableAlbumData.coverImg" class="mb-3">
+      <p>Image preview</p>
+      <img :src="editableAlbumData.coverImg" alt="Preview of your cover image" class="w-100">
+    </div>
     <div class="form-floating mb-3">
       <textarea v-model="editableAlbumData.description" class="form-control" placeholder="Album Description"
         id="albumDescription" minlength="15" maxlength="250"></textarea>
