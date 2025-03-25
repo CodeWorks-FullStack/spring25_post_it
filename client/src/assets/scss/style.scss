@@ -30,3 +30,14 @@ main {
   justify-content: start;
   align-items: end;
 }
+
+.bg-dark-glass {
+  background-color: rgba(43, 43, 43, 0.845);
+  backdrop-filter: blur(4px);
+}
+
+.round-picture {
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  object-fit: cover;
+}
