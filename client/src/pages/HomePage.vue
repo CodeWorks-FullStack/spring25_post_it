@@ -1,5 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import AlbumCard from '@/components/AlbumCard.vue';
 import { albumsService } from '@/services/AlbumsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -29,8 +30,8 @@ async function getAlbums() {
           <span class="fs-5 fw-bold">Popular Albums</span>
         </div>
       </div>
-      <div class="col-12">
-        {{ albums }}
+      <div v-for="album in albums" :key="album.id" class="col-md-4">
+        <AlbumCard :album="album" />
       </div>
     </div>
   </div>
