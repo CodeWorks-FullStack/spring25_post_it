@@ -28,7 +28,7 @@ async function getAlbumById() {
 
 async function archiveAlbum() {
   try {
-    const confirmed = await Pop.confirm(`Are you sure you want to archive ${album.value.title}?`)
+    const confirmed = await Pop.confirm(`Are you sure you want to ${album.value.archived ? 'unarchive' : 'archive'} ${album.value.title}?`)
     if (!confirmed) {
       return
     }
@@ -54,6 +54,11 @@ async function archiveAlbum() {
             <div class="mb-5">
               <h1 class="text-center">{{ album.title }}</h1>
               <p class="fs-4">{{ album.description }}</p>
+              <p v-if="album.archived" class="text-center">
+                <span class="mdi mdi-alert text-warning"></span>
+                This album has been archived and is no longer accepting new pictures
+                <span class="mdi mdi-alert text-warning"></span>
+              </p>
             </div>
             <div class="d-flex justify-content-between align-items-end">
               <div class="d-flex gap-2">
@@ -62,7 +67,8 @@ async function archiveAlbum() {
                 </div>
                 <button @click="archiveAlbum()" v-if="album.creatorId == account?.id"
                   class="btn btn-danger rounded-pill text-light">
-                  Archive Album <span class="mdi mdi-close-circle"></span>
+                  {{ album.archived ? 'Unarchive Album' : 'Archive Album' }}
+                  <span class="mdi" :class="album.archived ? 'mdi-publish' : 'mdi-close-circle'"></span>
                 </button>
               </div>
               <div class="d-flex gap-2 align-items-end">
