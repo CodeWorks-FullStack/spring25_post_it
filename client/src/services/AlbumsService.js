@@ -21,6 +21,8 @@ class AlbumsService {
   async getAlbumById(albumId) {
     const response = await api.get(`api/albums/${albumId}`)
     logger.log('GOT ALBUM', response.data)
+    const album = new Album(response.data)
+    AppState.activeAlbum = album
   }
 }
 
