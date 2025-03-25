@@ -3,7 +3,7 @@ import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class AlbumsService {
   async getAllAlbums() {
-    const albums = await dbContext.Albums.find().populate('creator', 'name picture')
+    const albums = await dbContext.Albums.find().populate('creator', 'name picture').sort('-createdAt')
     return albums
   }
   async getAlbumById(albumId) {

@@ -1,7 +1,9 @@
 <script setup>
 import AlbumForm from './AlbumForm.vue';
 
-
+defineProps({
+  showFooter: { type: Boolean, default: false }
+})
 </script>
 
 
@@ -16,7 +18,7 @@ import AlbumForm from './AlbumForm.vue';
         <div class="modal-body">
           <AlbumForm />
         </div>
-        <div class="modal-footer">
+        <div v-if="showFooter" class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary">Save changes</button>
         </div>
