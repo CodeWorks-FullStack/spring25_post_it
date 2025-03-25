@@ -8,6 +8,8 @@ import { useRoute } from 'vue-router';
 
 const album = computed(() => AppState.activeAlbum)
 
+const account = computed(() => AppState.account)
+
 const route = useRoute()
 
 onMounted(() => {
@@ -21,6 +23,21 @@ async function getAlbumById() {
   } catch (error) {
     Pop.error(error, 'Could not get album')
     logger.error('COULD NOT GET ALBUM')
+  }
+}
+
+async function archiveAlbum() {
+  try {
+    const confirmed = await Pop.confirm(`Are you sure you want to archive ${album.value.title}?`)
+    if (!confirmed) {
+      return
+    }
+    const albumId = route.params.albumId
+    await albumsService.archiveAlbum(albumId)
+  }
+  catch (error) {
+    Pop.error(error, 'Could not archive album')
+    logger.error('COULD NOT ARCHIVE ALBUM')
   }
 }
 
@@ -43,7 +60,8 @@ async function getAlbumById() {
                 <div class="bg-info px-4 py-1 rounded-pill">
                   {{ album.category }}
                 </div>
-                <button class="btn btn-danger rounded-pill text-light">
+                <button @click="archiveAlbum()" v-if="album.creatorId == account?.id"
+                  class="btn btn-danger rounded-pill text-light">
                   Archive Album <span class="mdi mdi-close-circle"></span>
                 </button>
               </div>
