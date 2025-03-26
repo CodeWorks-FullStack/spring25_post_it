@@ -5,6 +5,7 @@ import { WatcherAlbum, WatcherProfile } from "@/models/Watcher.js"
 
 class WatchersService {
 
+
   async createWatcher(watcherData) {
     const response = await api.post('api/watchers', watcherData)
     logger.log('CREATED WATCHER', response.data)
@@ -23,6 +24,10 @@ class WatchersService {
     logger.log('GOT MY ALBUMS I AM WATCHING', response.data)
     const watcherAlbums = response.data.map(pojo => new WatcherAlbum(pojo))
     AppState.watcherAlbums = watcherAlbums
+  }
+  async deleteWatcher(watcherId) {
+    const response = await api.delete(`/api/watchers/${watcherId}`)
+    logger.log('DELETED WATCHER', response.data)
   }
 }
 

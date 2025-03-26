@@ -22,6 +22,19 @@ async function getMyWatchedAlbums() {
   }
 }
 
+async function deleteWatcher(watcherId) {
+  try {
+    const confirmed = await Pop.confirm("Are you sure you do not want to watch this album any longer?")
+    if (!confirmed) {
+      return
+    }
+    await watchersService.deleteWatcher(watcherId)
+  } catch (error) {
+    Pop.error(error, 'could not delete')
+    logger.error('could not delete'.toUpperCase(), error)
+  }
+}
+
 </script>
 
 <template>
@@ -33,13 +46,18 @@ async function getMyWatchedAlbums() {
             <div class="text-center my-3">
               <span>Welcome back {{ account.name }}</span>
               <img :src="account.picture" :alt="account.name" class="account-img ms-3 round-picture">
-              <p class="mt-3">You are watching 107 albums</p>
+              <p class="mt-3">You are watching {{ watcherAlbums.length }} albums</p>
             </div>
           </div>
         </div>
         <div class="row">
           <div v-for="watcher in watcherAlbums" :key="watcher.id" class="col-md-4">
             <AlbumCard :album="watcher.album" />
+            <div class="text-end mb-5">
+              <button @click="deleteWatcher(watcher.id)" class="btn btn-danger">
+                Leave <span class="mdi mdi-door-open"></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
