@@ -1,6 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
 import { albumsService } from '@/services/AlbumsService.js';
+import { picturesService } from '@/services/PicturesService.js';
 import { watchersService } from '@/services/WatchersService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -16,6 +17,7 @@ const route = useRoute()
 onMounted(() => {
   getAlbumById()
   getWatchersByAlbumId()
+  getPicturesByAlbumId()
 })
 
 async function getAlbumById() {
@@ -60,6 +62,16 @@ async function createWatcher() {
   } catch (error) {
     Pop.error(error, 'Could not cREATE watcher')
     logger.error('COULD NOT CREATE WATCHER')
+  }
+}
+
+async function getPicturesByAlbumId() {
+  try {
+    const albumId = route.params.albumId
+    await picturesService.getPicturesByAlbumId(albumId)
+  } catch (error) {
+    Pop.error(error, 'Could not get pictures')
+    logger.error('COULD NOT GET PICTURES')
   }
 }
 
