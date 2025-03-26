@@ -7,6 +7,7 @@ import { picturesService } from "../services/PicturesService.js";
 export class AlbumsController extends BaseController {
   constructor() {
     super('api/albums')
+    // REVIEW a lot of our routes start with 'api/albums'
     this.router
       .get('', this.getAllAlbums)
       .get('/:albumId', this.getAlbumById)
@@ -111,5 +112,4 @@ export class AlbumsController extends BaseController {
       next(error)
     }
   }
-
 }
