@@ -11,6 +11,7 @@ class AlbumsService {
     logger.log('CREATED ALBUM', response.data)
     const album = new Album(response.data)
     AppState.albums.unshift(album)
+    return album
   }
   async getAlbums() {
     const response = await api.get('api/albums')

@@ -4,9 +4,11 @@ import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
 import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.js';
 import { ref } from 'vue';
-
+import { useRouter } from 'vue-router';
 
 const categories = ['aesthetics', 'food', 'games', 'animals', 'misc', 'vibes']
+// NOTE useRouter allows us to change route information
+const router = useRouter()
 
 const editableAlbumData = ref({
   title: '',
@@ -17,7 +19,7 @@ const editableAlbumData = ref({
 
 async function createAlbum() {
   try {
-    await albumsService.createAlbum(editableAlbumData.value)
+    const album = await albumsService.createAlbum(editableAlbumData.value)
     editableAlbumData.value = {
       title: '',
       coverImg: '',
@@ -26,6 +28,7 @@ async function createAlbum() {
     }
     // NOTE hides our modal with the id of 'albumModal'
     Modal.getOrCreateInstance('#albumModal').hide()
+    router.push({ name: 'Album Details', params: { albumId: album.id } })
   } catch (error) {
     Pop.error(error, 'Could not create album')
     logger.error('COULD NOT CREATE ALBUM', error)
