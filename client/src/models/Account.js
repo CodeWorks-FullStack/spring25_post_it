@@ -1,4 +1,13 @@
-export class Account {
+export class Profile {
+  constructor(data) {
+    this.id = data.id
+    this.name = data.name
+    this.picture = data.picture
+  }
+
+}
+// REVIEW inheritance is cool
+export class Account extends Profile {
   /**
    * @typedef AccountData
    * @property {string} id
@@ -9,10 +18,9 @@ export class Account {
    * @param {AccountData} data
    */
   constructor(data) {
-    this.id = data.id
+    super(data)
     this.email = data.email
-    this.name = data.name
-    this.picture = data.picture
     // TODO add additional properties if needed
   }
 }
+
