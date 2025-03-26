@@ -20,9 +20,10 @@ defineProps({
             <span>{{ album.creator.name }}</span>
           </div>
         </div>
-        <div>
+        <div
+          :title="album.watcherCount + (album.watcherCount == 1 ? ' person is ' : ' people are ') + 'watching this album'">
           <span class="mdi mdi-account-multiple me-2"></span>
-          <span>0</span>
+          <span>{{ album.watcherCount }}</span>
         </div>
       </div>
     </div>
