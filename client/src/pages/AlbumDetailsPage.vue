@@ -115,9 +115,9 @@ async function createWatcher() {
             <span>Join</span>
           </button>
         </div>
-        <div>
-          <div v-for="watcher in watcherProfiles" :key="watcher.id">
-            <img :src="watcher.profile.picture" :alt="watcher.profile.name" class="watcher-profile-img">
+        <div class="watcher-profiles d-flex flex-wrap gap-2">
+          <div v-for="watcher in watcherProfiles" :key="watcher.id" class="p-1">
+            <img :src="watcher.profile.picture" :alt="watcher.profile.name" class="watcher-profile-img rounded mb-2">
           </div>
         </div>
       </div>
@@ -146,6 +146,14 @@ async function createWatcher() {
   height: 5rem;
 }
 
+.watcher-profiles>* {
+  width: 30%;
+}
+
 // TODO make this look good
-.watcher-profile-img {}
+.watcher-profile-img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  box-shadow: 3px 3px var(--bs-light);
+}
 </style>
