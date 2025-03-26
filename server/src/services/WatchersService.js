@@ -17,7 +17,14 @@ class WatchersService {
   }
 
   async getWatchersByAccountId(userId) {
-    const watchers = await dbContext.Watchers.find({ accountId: userId }).populate('album')
+    // NOTE nested populate
+    const watchers = await dbContext.Watchers.find({ accountId: userId }).populate({
+      path: 'album',
+      populate: {
+        path: 'creator watcherCount',
+        select: 'name picture'
+      }
+    })
     return watchers
   }
 
