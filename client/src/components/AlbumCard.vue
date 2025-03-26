@@ -15,7 +15,7 @@ defineProps({
         <!-- TODO show off random color -->
         <div>
           <p class="fw-bold mb-1">{{ album.title }}</p>
-          <div v-if="album.creator">
+          <div>
             <img :src="album.creator.picture" :alt="'A picture of ' + album.creator.name" class="round-picture me-2">
             <span>{{ album.creator.name }}</span>
           </div>
