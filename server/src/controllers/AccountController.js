@@ -1,7 +1,9 @@
 import { Auth0Provider } from '@bcwdev/auth0provider'
 import { accountService } from '../services/AccountService.js'
 import BaseController from '../utils/BaseController.js'
+import { watchersService } from '../services/WatchersService.js'
 
+// NOTE any endpoint here should be just for the logged in user in your application
 export class AccountController extends BaseController {
   constructor() {
     super('account')
@@ -9,6 +11,7 @@ export class AccountController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .get('', this.getUserAccount)
       .put('', this.editUserAccount)
+      .get('/watching', this.getAlbumsIAmWatching)
   }
 
   async getUserAccount(req, res, next) {
@@ -20,7 +23,7 @@ export class AccountController extends BaseController {
     }
   }
 
-   async editUserAccount(req, res, next) {
+  async editUserAccount(req, res, next) {
     try {
       const accountId = req.userInfo.id
       req.body.id = accountId
@@ -30,5 +33,20 @@ export class AccountController extends BaseController {
       next(error)
     }
   }
-  
+
+  /**
+  * @param {import("express").Request} request
+  * @param {import("express").Response} response
+  * @param {import("express").NextFunction} next
+  */
+  async getAlbumsIAmWatching(request, response, next) {
+    try {
+      const userInfo = request.userInfo
+      const watchers = await watchersService.getWatchersByAccountId(userInfo.id)
+      response.send(watchers)
+    } catch (error) {
+      next(error)
+    }
+  }
+
 }
