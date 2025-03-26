@@ -28,6 +28,9 @@ class WatchersService {
   async deleteWatcher(watcherId) {
     const response = await api.delete(`/api/watchers/${watcherId}`)
     logger.log('DELETED WATCHER', response.data)
+    const watcherAlbums = AppState.watcherAlbums
+    const index = watcherAlbums.findIndex(watcher => watcher.id == watcherId)
+    watcherAlbums.splice(index, 1)
   }
 }
 
