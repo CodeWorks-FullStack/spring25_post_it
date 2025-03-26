@@ -11,6 +11,7 @@ import { useRoute } from 'vue-router';
 const album = computed(() => AppState.activeAlbum)
 const account = computed(() => AppState.account)
 const watcherProfiles = computed(() => AppState.watcherProfiles)
+const pictures = computed(() => AppState.pictures)
 
 const route = useRoute()
 
@@ -134,7 +135,9 @@ async function getPicturesByAlbumId() {
         </div>
       </div>
       <!-- ANCHOR pictures -->
-      <div class="col-md-9"></div>
+      <div class="col-md-9">
+        {{ pictures }}
+      </div>
     </div>
   </div>
   <div v-else class="container">
