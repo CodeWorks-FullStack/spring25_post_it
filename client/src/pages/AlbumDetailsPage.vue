@@ -14,6 +14,7 @@ const album = computed(() => AppState.activeAlbum)
 const account = computed(() => AppState.account)
 const watcherProfiles = computed(() => AppState.watcherProfiles)
 const pictures = computed(() => AppState.pictures)
+const isWatching = computed(() => watcherProfiles.value.some(watcher => watcher.accountId == account.value?.id))
 
 const route = useRoute()
 
@@ -125,10 +126,13 @@ async function getPicturesByAlbumId() {
             <span class="d-block">{{ album.watcherCount }}</span>
             <span>Watchers</span>
           </div>
-          <button @click="createWatcher()" class="btn btn-success">
+          <button v-if="account" @click="createWatcher()" class="btn btn-success">
             <span class="mdi mdi-account-plus d-block"></span>
             <span>Join</span>
           </button>
+        </div>
+        <div v-if="isWatching">
+          <p>You are watching this album 💖</p>
         </div>
         <div class="watcher-profiles d-flex flex-wrap gap-2">
           <div v-for="watcher in watcherProfiles" :key="watcher.id" class="p-1">
@@ -139,13 +143,14 @@ async function getPicturesByAlbumId() {
       <!-- ANCHOR pictures -->
       <div class="col-md-9">
         <div class="masonry-container">
-          <div v-for="picture in pictures" :key="picture.id">
+          <div v-for="picture in pictures" :key="picture.id" class="mb-3">
             <img :src="picture.imgUrl" :alt="'a picture submitted by ' + picture.creator.name">
           </div>
         </div>
       </div>
     </div>
-    <button class="btn btn-success picture-button" data-bs-target="#pictureModal" data-bs-toggle="modal">
+    <button v-if="account" class="btn btn-success picture-button m-3" data-bs-target="#pictureModal"
+      data-bs-toggle="modal" :disabled="album.archived">
       + Create Picture
     </button>
     <ModalComponent :modalTitle="'Create Picture'" :modalId="'pictureModal'">
@@ -185,7 +190,12 @@ async function getPicturesByAlbumId() {
 }
 
 .masonry-container {
-  columns: 400px;
+  columns: 200px;
+}
+
+.masonry-container>* {
+  display: inline-block;
+  break-inside: avoid;
 }
 
 .masonry-container img {
@@ -194,5 +204,7 @@ async function getPicturesByAlbumId() {
 
 .picture-button {
   position: fixed;
+  bottom: 0;
+  right: 0;
 }
 </style>
