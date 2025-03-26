@@ -22,3 +22,11 @@ AlbumSchema.virtual('creator', {
   ref: 'Account',
   justOne: true
 })
+
+AlbumSchema.virtual('watcherCount', {
+  localField: '_id',
+  ref: 'Watcher',
+  foreignField: 'albumId',
+  justOne: false,
+  count: true
+})
