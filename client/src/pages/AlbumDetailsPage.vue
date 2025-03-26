@@ -8,8 +8,8 @@ import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const album = computed(() => AppState.activeAlbum)
-
 const account = computed(() => AppState.account)
+const watcherProfiles = computed(() => AppState.watcherProfiles)
 
 const route = useRoute()
 
@@ -53,6 +53,16 @@ async function getWatchersByAlbumId() {
   }
 }
 
+async function createWatcher() {
+  try {
+    const watcherData = { albumId: route.params.albumId }
+    await watchersService.createWatcher(watcherData)
+  } catch (error) {
+    Pop.error(error, 'Could not cREATE watcher')
+    logger.error('COULD NOT CREATE WATCHER')
+  }
+}
+
 </script>
 
 
@@ -92,6 +102,28 @@ async function getWatchersByAlbumId() {
         </div>
       </div>
     </div>
+    <div class="row">
+      <!-- ANCHOR watchers -->
+      <div class="col-md-3">
+        <div class="d-flex mb-3">
+          <div class="bg-dark-glass rounded p-2 flex-grow-1">
+            <span class="d-block">{{ album.watcherCount }}</span>
+            <span>Watchers</span>
+          </div>
+          <button @click="createWatcher()" class="btn btn-success">
+            <span class="mdi mdi-account-plus d-block"></span>
+            <span>Join</span>
+          </button>
+        </div>
+        <div>
+          <div v-for="watcher in watcherProfiles" :key="watcher.id">
+            <img :src="watcher.profile.picture" :alt="watcher.profile.name" class="watcher-profile-img">
+          </div>
+        </div>
+      </div>
+      <!-- ANCHOR pictures -->
+      <div class="col-md-9"></div>
+    </div>
   </div>
   <div v-else class="container">
     <div class="row">
@@ -113,4 +145,7 @@ async function getWatchersByAlbumId() {
 .creator-picture {
   height: 5rem;
 }
+
+// TODO make this look good
+.watcher-profile-img {}
 </style>

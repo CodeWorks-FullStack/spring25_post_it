@@ -7,7 +7,7 @@ class AlbumsService {
     return albums
   }
   async getAlbumById(albumId) {
-    const album = await dbContext.Albums.findById(albumId).populate('creator', 'name picture')
+    const album = await dbContext.Albums.findById(albumId).populate('creator', 'name picture').populate('watcherCount')
     if (album == null) {
       throw new BadRequest(`Invalid album id: ${albumId}`)
     }
