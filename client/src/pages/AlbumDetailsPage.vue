@@ -1,5 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import ModalComponent from '@/components/ModalComponent.vue';
+import PictureForm from '@/components/PictureForm.vue';
 import { albumsService } from '@/services/AlbumsService.js';
 import { picturesService } from '@/services/PicturesService.js';
 import { watchersService } from '@/services/WatchersService.js';
@@ -136,9 +138,19 @@ async function getPicturesByAlbumId() {
       </div>
       <!-- ANCHOR pictures -->
       <div class="col-md-9">
-        {{ pictures }}
+        <div class="masonry-container">
+          <div v-for="picture in pictures" :key="picture.id">
+            <img :src="picture.imgUrl" :alt="'a picture submitted by ' + picture.creator.name">
+          </div>
+        </div>
       </div>
     </div>
+    <button class="btn btn-success picture-button" data-bs-target="#pictureModal" data-bs-toggle="modal">
+      + Create Picture
+    </button>
+    <ModalComponent :modalTitle="'Create Picture'" :modalId="'pictureModal'">
+      <PictureForm />
+    </ModalComponent>
   </div>
   <div v-else class="container">
     <div class="row">
@@ -170,5 +182,17 @@ async function getPicturesByAlbumId() {
   width: 100%;
   aspect-ratio: 1/1;
   box-shadow: 3px 3px var(--bs-light);
+}
+
+.masonry-container {
+  columns: 400px;
+}
+
+.masonry-container img {
+  width: 100%;
+}
+
+.picture-button {
+  position: fixed;
 }
 </style>
