@@ -1,5 +1,6 @@
 <script setup>
 
+// NOTE this component will require at least 2 props when injecting it into another component
 defineProps({
   showFooter: { type: Boolean, default: false },
   modalTitle: { type: String, required: true },
@@ -17,7 +18,6 @@ defineProps({
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <!-- <AlbumForm /> -->
           <!-- NOTE vue slot allows us to dynamically inject html or components inside of this modal component -->
           <slot></slot>
         </div>

@@ -1,6 +1,7 @@
 import { Profile } from "./Account.js"
 import { Album } from "./Album.js"
 
+// NOTE will probably never create a "Watcher", so we don't need to export this class
 class Watcher {
   constructor(data) {
     this.id = data.id

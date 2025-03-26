@@ -12,7 +12,6 @@ defineProps({
     <div class="rounded shadow p-2 album-card mb-3 d-flex align-items-end text-light"
       :style="{ backgroundImage: `url(${album.coverImg})` }">
       <div class="d-flex justify-content-between align-items-center bg-dark-glass rounded p-2 flex-grow-1">
-        <!-- TODO show off random color -->
         <div>
           <p class="fw-bold mb-1">{{ album.title }}</p>
           <div>

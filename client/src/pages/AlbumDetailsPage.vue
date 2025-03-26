@@ -14,6 +14,7 @@ const album = computed(() => AppState.activeAlbum)
 const account = computed(() => AppState.account)
 const watcherProfiles = computed(() => AppState.watcherProfiles)
 const pictures = computed(() => AppState.pictures)
+// NOTE checks to see if the logged in user has created a watcher object
 const isWatching = computed(() => watcherProfiles.value.some(watcher => watcher.accountId == account.value?.id))
 
 const route = useRoute()
@@ -182,7 +183,6 @@ async function getPicturesByAlbumId() {
   width: 30%;
 }
 
-// TODO make this look good
 .watcher-profile-img {
   width: 100%;
   aspect-ratio: 1/1;

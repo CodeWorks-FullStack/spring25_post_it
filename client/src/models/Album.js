@@ -9,6 +9,7 @@ export class Album {
     this.archived = data.archived
     this.description = data.description
     this.category = data.category
+    // NOTE if your creator is ever null or undefined this will definitely break
     this.creator = new Profile(data.creator)
     this.createdAt = new Date(data.createdAt)
     this.updatedAt = new Date(data.updatedAt)

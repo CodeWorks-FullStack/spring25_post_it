@@ -19,6 +19,7 @@ const editableAlbumData = ref({
 
 async function createAlbum() {
   try {
+    // NOTE must return the album from the service in order for this to work
     const album = await albumsService.createAlbum(editableAlbumData.value)
     editableAlbumData.value = {
       title: '',
@@ -26,8 +27,9 @@ async function createAlbum() {
       description: '',
       category: ''
     }
-    // NOTE hides our modal with the id of 'albumModal'
+    // NOTE hides our modal that has the id of 'albumModal'
     Modal.getOrCreateInstance('#albumModal').hide()
+    // NOTE navigates the user to the Album Details page. The object that we pass to the push method is formatted the same as the 'to' prop for a RouterLink
     router.push({ name: 'Album Details', params: { albumId: album.id } })
   } catch (error) {
     Pop.error(error, 'Could not create album')

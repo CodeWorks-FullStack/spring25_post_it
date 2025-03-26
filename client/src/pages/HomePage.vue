@@ -80,11 +80,10 @@ async function getAlbums() {
         <div @click="filterCategory = category.name"
           class="p-4 fs-3 fw-bold text-center rounded mb-2 category-button text-shadow"
           :style="{ backgroundImage: `url(${category.backgroundImg})` }" role="button"
-          :title="`Display ${category.name} albums`">
+          :title="`Filter albums by ${category.name}`">
           {{ category.name }}
         </div>
       </div>
-      <!-- TODO do a v-else for if they are not logged in -->
       <div v-if="account" class="col-6 col-md-3">
         <div class="p-4 fs-3 fw-bold text-center rounded mb-2 category-button text-shadow create-button" role="button"
           title="Create new album" data-bs-toggle="modal" data-bs-target="#albumModal">
@@ -104,7 +103,9 @@ async function getAlbums() {
     </div>
   </div>
 
+  <!-- NOTE modal component has lots of props! -->
   <ModalComponent :modalTitle="'Create Album'" :modalId="'albumModal'">
+    <!-- NOTE ModalComponent has a slot in it, so we can pass through content that will be 'slotted' into the modal body -->
     <AlbumForm />
   </ModalComponent>
 </template>

@@ -15,6 +15,7 @@ const editablePictureData = ref({
 async function createPicture() {
   try {
     await picturesService.createPicture(editablePictureData.value)
+    // NOTE only need to clear the imgUrl to reset the form
     editablePictureData.value.imgUrl = ''
   } catch (error) {
     Pop.error(error, 'could not create picture')

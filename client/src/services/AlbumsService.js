@@ -4,13 +4,12 @@ import { Album } from "@/models/Album.js"
 import { AppState } from "@/AppState.js"
 
 class AlbumsService {
-
-
   async createAlbum(albumData) {
     const response = await api.post('api/albums', albumData)
     logger.log('CREATED ALBUM', response.data)
     const album = new Album(response.data)
     AppState.albums.unshift(album)
+    // NOTE makes the album accessible to any function that calls 'createAlbum'
     return album
   }
   async getAlbums() {
@@ -19,14 +18,12 @@ class AlbumsService {
     const albums = response.data.map(pojo => new Album(pojo))
     AppState.albums = albums
   }
-
   async getAlbumById(albumId) {
     const response = await api.get(`api/albums/${albumId}`)
     logger.log('GOT ALBUM', response.data)
     const album = new Album(response.data)
     AppState.activeAlbum = album
   }
-
   async archiveAlbum(albumId) {
     const response = await api.delete(`api/albums/${albumId}`)
     logger.log('ARCHIVED ALBUM', response.data)

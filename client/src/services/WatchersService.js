@@ -4,8 +4,6 @@ import { AppState } from "@/AppState.js"
 import { WatcherAlbum, WatcherProfile } from "@/models/Watcher.js"
 
 class WatchersService {
-
-
   async createWatcher(watcherData) {
     const response = await api.post('api/watchers', watcherData)
     logger.log('CREATED WATCHER', response.data)
@@ -16,12 +14,14 @@ class WatchersService {
   async getWatchersByAlbumId(albumId) {
     const response = await api.get(`/api/albums/${albumId}/watchers`)
     logger.log('GOT WATCHERS', response.data)
+    // NOTE make sure you map into the object that supports the correct version of the many-to-many
     const watcherProfiles = response.data.map(pojo => new WatcherProfile(pojo))
     AppState.watcherProfiles = watcherProfiles
   }
   async getMyWatchedAlbums() {
     const response = await api.get('account/watching')
     logger.log('GOT MY ALBUMS I AM WATCHING', response.data)
+    // NOTE make sure you map into the object that supports the correct version of the many-to-many
     const watcherAlbums = response.data.map(pojo => new WatcherAlbum(pojo))
     AppState.watcherAlbums = watcherAlbums
   }
