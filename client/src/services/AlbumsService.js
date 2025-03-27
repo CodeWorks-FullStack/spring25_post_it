@@ -8,6 +8,7 @@ class AlbumsService {
     const response = await api.post('api/albums', albumData)
     logger.log('CREATED ALBUM', response.data)
     const album = new Album(response.data)
+    // NOTE make sure your data renders in way that matches how your API sorts it
     AppState.albums.unshift(album)
     // NOTE makes the album accessible to any function that calls 'createAlbum'
     return album
