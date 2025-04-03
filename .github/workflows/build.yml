@@ -1,9 +1,6 @@
 name: Build & Push Docker Image to GHCR
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 env:
@@ -11,7 +8,6 @@ env:
 
 jobs:
   build-push:
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, 'docker:build')
     runs-on: ubuntu-latest
 
     steps:
@@ -31,6 +27,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
 
+      - name: Convert owner and repo to lowercase
+        id: vars
+        run: |
+          echo "repo_owner=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+          echo "repo_name=$(echo '${{ github.event.repository.name }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
       - name: Build and Push Multi-Arch Image 🐋
         uses: docker/build-push-action@v5
         with:
@@ -39,5 +41,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/codeworks-fullstack/${{ github.event.repository.name }}:latest
-            ghcr.io/codeworks-fullstack/${{ github.event.repository.name }}:${{ github.sha }}
+            ghcr.io/${{ steps.vars.outputs.repo_owner }}/${{ steps.vars.outputs.repo_name }}:latest
+            ghcr.io/${{ steps.vars.outputs.repo_owner }}/${{ steps.vars.outputs.repo_name }}:${{ github.sha }}
