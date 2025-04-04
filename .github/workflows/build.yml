@@ -1,7 +1,8 @@
+# build.yml
 name: Build & Push Docker Image to GHCR
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab
 
 env:
   DOCKERFILE_PATH: server/Dockerfile   # 👈 Update this to wherever your Dockerfile is within your repository
@@ -12,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout Repository 👀
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4     # Clones the repo for the workflow to access
 
       - name: Set up QEMU for cross-platform builds
         uses: docker/setup-qemu-action@v3
@@ -33,6 +34,8 @@ jobs:
           echo "repo_owner=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
           echo "repo_name=$(echo '${{ github.event.repository.name }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
 
+      # Builds and pushes the Docker image to GitHub Container Registry
+      # Uses the latest tag and the commit SHA as a version tag
       - name: Build and Push Multi-Arch Image 🐋
         uses: docker/build-push-action@v5
         with:
