@@ -9,7 +9,7 @@ class AlbumsService {
     logger.log('CREATED ALBUM', response.data)
     const album = new Album(response.data)
     // NOTE make sure your data renders in way that matches how your API sorts it
-    AppState.albums.unshift(album)
+    // AppState.albums.unshift(album) ⚡web socket handles state update now
     // NOTE makes the album accessible to any function that calls 'createAlbum'
     return album
   }
