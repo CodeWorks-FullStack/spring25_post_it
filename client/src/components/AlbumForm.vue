@@ -30,7 +30,7 @@ async function createAlbum() {
     // NOTE hides our modal that has the id of 'albumModal'
     Modal.getOrCreateInstance('#albumModal').hide()
     // NOTE navigates the user to the Album Details page. The object that we pass to the push method is formatted the same as the 'to' prop for a RouterLink
-    router.push({ name: 'Album Details', params: { albumId: album.id } })
+    // router.push({ name: 'Album Details', params: { albumId: album.id } })
   } catch (error) {
     Pop.error(error, 'Could not create album')
     logger.error('COULD NOT CREATE ALBUM', error)
