@@ -4,7 +4,7 @@ import { SocketHandler } from "../utils/SocketHandler.js";
 class RoomHandler extends SocketHandler {
 
   constructor() {
-    super(true)
+    super()
     this
       .on('JOINED_ROOM', this.onJoinedRoom)
       .on('LEFT_ROOM', this.onLeftRoom)

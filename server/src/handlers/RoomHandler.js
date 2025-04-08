@@ -6,7 +6,7 @@ export class RoomHandler extends SocketHandler {
    * @param {import("socket.io").Socket} socket
    */
   constructor(io, socket) {
-    super(io, socket, true)
+    super(io, socket)
     this
       .on('JOIN_ROOM', this.joinRoom)
       .on('LEAVE_ROOM', this.leaveRoom)
