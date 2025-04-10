@@ -12,6 +12,7 @@ class WatchersService {
     AppState.activeAlbum.watcherCount++
   }
   async getWatchersByAlbumId(albumId) {
+    AppState.watcherProfiles = []
     const response = await api.get(`/api/albums/${albumId}/watchers`)
     logger.log('GOT WATCHERS', response.data)
     // NOTE make sure you map into the object that supports the correct version of the many-to-many
@@ -19,6 +20,7 @@ class WatchersService {
     AppState.watcherProfiles = watcherProfiles
   }
   async getMyWatchedAlbums() {
+    AppState.watcherAlbums = []
     const response = await api.get('account/watching')
     logger.log('GOT MY ALBUMS I AM WATCHING', response.data)
     // NOTE make sure you map into the object that supports the correct version of the many-to-many

@@ -17,6 +17,7 @@ class PicturesService {
     // AppState.pictures.push(picture) ⚡ socket now handles state update
   }
   async getPicturesByAlbumId(albumId) {
+    AppState.pictures = []
     const response = await api.get(`api/albums/${albumId}/pictures`)
     logger.log('GOT PICTURES', response.data)
     const pictures = response.data.map(pojo => new Picture(pojo))
