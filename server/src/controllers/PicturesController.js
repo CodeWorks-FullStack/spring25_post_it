@@ -9,12 +9,13 @@ export class PicturesController extends BaseController {
     this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createPicture)
+      .delete('/:pictureId', this.deletePicture)
   }
   /**
-      * @param {import("express").Request} request
-      * @param {import("express").Response} response
-      * @param {import("express").NextFunction} next
-      */
+    * @param {import("express").Request} request
+    * @param {import("express").Response} response
+    * @param {import("express").NextFunction} next
+  */
   async createPicture(request, response, next) {
     try {
       const pictureData = request.body
@@ -26,6 +27,21 @@ export class PicturesController extends BaseController {
       socketProvider.messageRoom(picture.albumId.toString(), 'CREATED_PICTURE', picture)
       // @ts-ignore
       socketProvider.messageUser(picture.album.creatorId.toString(), 'CREATED_PICTURE_FOR_USER_ALBUM', picture)
+    } catch (error) {
+      next(error)
+    }
+  }
+  /**
+    * @param {import("express").Request} request
+    * @param {import("express").Response} response
+    * @param {import("express").NextFunction} next
+  */
+  async deletePicture(request, response, next) {
+    try {
+      const pictureId = request.params.pictureId
+      const userInfo = request.userInfo
+      await picturesService.deletePicture(pictureId, userInfo)
+      response.send("Picture deleted!")
     } catch (error) {
       next(error)
     }

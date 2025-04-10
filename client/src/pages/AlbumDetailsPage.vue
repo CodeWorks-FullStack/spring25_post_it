@@ -1,6 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
 import ModalComponent from '@/components/ModalComponent.vue';
+import PictureCard from '@/components/PictureCard.vue';
 import PictureForm from '@/components/PictureForm.vue';
 import { roomHandler } from '@/handlers/RoomHandler.js';
 import { albumsService } from '@/services/AlbumsService.js';
@@ -159,7 +160,7 @@ function leaveAlbumRoom() {
       <div class="col-md-9">
         <div class="masonry-container">
           <div v-for="picture in pictures" :key="picture.id" class="mb-3">
-            <img :src="picture.imgUrl" :alt="'a picture submitted by ' + picture.creator.name">
+            <PictureCard :picture="picture" />
           </div>
         </div>
       </div>
@@ -210,10 +211,6 @@ function leaveAlbumRoom() {
 .masonry-container>* {
   display: inline-block;
   break-inside: avoid;
-}
-
-.masonry-container img {
-  width: 100%;
 }
 
 .picture-button {

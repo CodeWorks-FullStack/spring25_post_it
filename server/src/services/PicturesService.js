@@ -1,5 +1,5 @@
 import { dbContext } from "../db/DbContext.js"
-import { Forbidden } from "../utils/Errors.js"
+import { BadRequest, Forbidden } from "../utils/Errors.js"
 import { albumsService } from "./AlbumsService.js"
 
 class PicturesService {
@@ -21,6 +21,23 @@ class PicturesService {
     const pictures = await dbContext.Pictures.find({ albumId: albumId }).populate('creator', 'name picture')
     return pictures
   }
+
+  async getPictureById(pictureId) {
+    const picture = await dbContext.Pictures.findById(pictureId)
+    if (picture == null) throw new BadRequest(`Invalid id: ${pictureId}`)
+    return picture
+  }
+
+  async deletePicture(pictureId, userInfo) {
+    const picture = await this.getPictureById(pictureId)
+
+    if (picture.creatorId != userInfo.id) {
+      throw new Forbidden(`YOU CANNOT DELETE ANOTHER USER'S PICTURE, ${userInfo.nickname.toUpperCase()}`)
+    }
+
+    await picture.deleteOne()
+  }
+
 }
 
 export const picturesService = new PicturesService()
