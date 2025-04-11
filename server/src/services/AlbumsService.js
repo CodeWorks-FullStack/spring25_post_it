@@ -2,6 +2,7 @@ import { dbContext } from "../db/DbContext.js"
 import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class AlbumsService {
+
   async getAllAlbums() {
     const albums = await dbContext.Albums.find().populate('creator', 'name picture').populate('watcherCount').sort('-createdAt')
     return albums
@@ -29,6 +30,11 @@ class AlbumsService {
     album.archived = !album.archived
     await album.save() // updates the database
     return album
+  }
+  async deleteAlbum(albumId) {
+    const album = await this.getAlbumById(albumId)
+    await album.deleteOne()
+    return `${album.title} has been deleted permanently!`
   }
 }
 

@@ -17,6 +17,8 @@ export class AlbumsController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createAlbum)
       .delete('/:albumId', this.archiveAlbum)
+      .use(Auth0Provider.hasPermissions('delete:albums'))
+      .delete('/:albumId/destroy', this.deleteAlbum)
   }
 
   /**
@@ -111,6 +113,21 @@ export class AlbumsController extends BaseController {
       const userInfo = request.userInfo
       const album = await albumsService.archiveAlbum(albumId, userInfo)
       response.send(album)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  /**
+    * @param {import("express").Request} request
+    * @param {import("express").Response} response
+    * @param {import("express").NextFunction} next
+    */
+  async deleteAlbum(request, response, next) {
+    try {
+      const albumId = request.params.albumId
+      const message = await albumsService.deleteAlbum(albumId)
+      response.send(message)
     } catch (error) {
       next(error)
     }
