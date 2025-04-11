@@ -38,6 +38,13 @@ class PicturesService {
     await picture.deleteOne()
   }
 
+  async destroyPicture(pictureId) {
+    const picture = await this.getPictureById(pictureId)
+
+    await picture.deleteOne()
+  }
+
+
 }
 
 export const picturesService = new PicturesService()
