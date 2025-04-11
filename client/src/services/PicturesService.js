@@ -4,6 +4,7 @@ import { Picture } from "@/models/Picture.js"
 import { AppState } from "@/AppState.js"
 
 class PicturesService {
+
   async deletePicture(pictureId) {
     await api.delete(`api/pictures/${pictureId}`)
     const pictures = AppState.pictures
@@ -22,6 +23,14 @@ class PicturesService {
     logger.log('GOT PICTURES', response.data)
     const pictures = response.data.map(pojo => new Picture(pojo))
     AppState.pictures = pictures
+  }
+
+  async destroyPicture(pictureId) {
+    const response = await api.delete(`api/pictures/${pictureId}/destroy`)
+    logger.log('DESTROYED PICTURE', response.data)
+    const pictures = AppState.pictures
+    const index = pictures.findIndex(pic => pic.id == pictureId)
+    pictures.splice(index, 1)
   }
 }
 

@@ -10,6 +10,8 @@ export class PicturesController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createPicture)
       .delete('/:pictureId', this.deletePicture)
+      .use(Auth0Provider.hasPermissions('delete:pictures'))
+      .delete('/:pictureId/destroy', this.destroyPicture)
   }
   /**
     * @param {import("express").Request} request
@@ -41,6 +43,21 @@ export class PicturesController extends BaseController {
       const pictureId = request.params.pictureId
       const userInfo = request.userInfo
       await picturesService.deletePicture(pictureId, userInfo)
+      response.send("Picture deleted!")
+    } catch (error) {
+      next(error)
+    }
+  }
+  /**
+    * @param {import("express").Request} request
+    * @param {import("express").Response} response
+    * @param {import("express").NextFunction} next
+  */
+
+  async destroyPicture(request, response, next) {
+    try {
+      const pictureId = request.params.pictureId
+      await picturesService.destroyPicture(pictureId)
       response.send("Picture deleted!")
     } catch (error) {
       next(error)

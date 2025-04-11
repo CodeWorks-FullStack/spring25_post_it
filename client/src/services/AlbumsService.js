@@ -32,6 +32,13 @@ class AlbumsService {
     const album = new Album(response.data)
     AppState.activeAlbum = album
   }
+
+
+  async deleteAlbum(albumId) {
+    const response = await api.delete(`api/albums/${albumId}/destroy`)
+    logger.log('DELETED ALBUM', response.data)
+    AppState.activeAlbum = null
+  }
 }
 
 export const albumsService = new AlbumsService()

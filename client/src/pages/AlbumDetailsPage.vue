@@ -10,16 +10,19 @@ import { watchersService } from '@/services/WatchersService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
-import { onBeforeRouteLeave, useRoute } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 
 const album = computed(() => AppState.activeAlbum)
 const account = computed(() => AppState.account)
 const watcherProfiles = computed(() => AppState.watcherProfiles)
 const pictures = computed(() => AppState.pictures)
+// NOTE identity is tied to our auth0 credentials
+const identity = computed(() => AppState.identity)
 // NOTE checks to see if the logged in user has created a watcher object
 const isWatching = computed(() => watcherProfiles.value.some(watcher => watcher.accountId == account.value?.id))
 
 const route = useRoute()
+const router = useRouter()
 
 onMounted(() => {
   getAlbumById()
@@ -83,7 +86,29 @@ async function getPicturesByAlbumId() {
     await picturesService.getPicturesByAlbumId(albumId)
   } catch (error) {
     Pop.error(error, 'Could not get pictures')
-    logger.error('COULD NOT GET PICTURES')
+    logger.error('COULD NOT GET PICTURES', error)
+  }
+}
+
+async function deleteAlbum() {
+  try {
+    const confirmed = await Pop.confirm(`Are you sure you want to permanently delete ${album.value.title}?`, 'It will be gone forever (and ever)')
+
+    if (!confirmed) {
+      return
+    }
+
+
+    const albumId = route.params.albumId
+    await albumsService.deleteAlbum(albumId)
+
+    Pop.toast('That album is toast!')
+
+    router.push({ name: 'Home' })
+
+  } catch (error) {
+    Pop.error(error, 'Could not delete album')
+    logger.error('COULD NOT DELETE ALBUM', error)
   }
 }
 
@@ -123,6 +148,10 @@ function leaveAlbumRoom() {
                   class="btn btn-danger rounded-pill text-light">
                   {{ album.archived ? 'Unarchive Album' : 'Archive Album' }}
                   <span class="mdi" :class="album.archived ? 'mdi-publish' : 'mdi-close-circle'"></span>
+                </button>
+                <button @click="deleteAlbum()" v-if="identity.permissions.includes('delete:albums')"
+                  class="btn btn-red rounded-pill">
+                  Delete Album <span class="mdi mdi-delete-forever"></span>
                 </button>
               </div>
               <div class="d-flex gap-2 align-items-end">
