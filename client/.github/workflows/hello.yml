@@ -1,0 +1,10 @@
+name: Cool beans
+
+on: [push, workflow_dispatch]
+
+jobs: 
+  example-job:
+    runs-on: unbuntu-latest
+    steps:
+      - name: Neato
+        uses: echo "hello world"

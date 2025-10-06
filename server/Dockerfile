@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image for the client build
-FROM --platform=linux/amd64 node:22-slim AS client-builder
+FROM --platform=linux/amd64 node:22-alpine AS client-builder
 
 # Set the working directory in the client builder container
 WORKDIR /app/client
@@ -17,7 +17,7 @@ COPY client ./
 RUN npm run build
 
 # Use a smaller base image for the final server image
-FROM node:22-slim
+FROM node:22-alpine
 
 # Set the working directory in the server container
 WORKDIR /app/server
@@ -26,7 +26,7 @@ WORKDIR /app/server
 COPY server/package*.json ./
 
 # Install server application dependencies
-RUN npm install
+RUN npm install --production
 
 # Copy the server application source code to the server container
 COPY server ./
