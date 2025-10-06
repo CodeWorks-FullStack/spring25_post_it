@@ -8,7 +8,7 @@ WORKDIR /app/client
 COPY client/package*.json ./
 
 # Install client application dependencies
-RUN npm install --omit=dev
+RUN npm install
 
 # Copy the client application source code to the client builder container
 COPY client ./
@@ -26,7 +26,7 @@ WORKDIR /app/server
 COPY server/package*.json ./
 
 # Install server application dependencies
-RUN npm install --omit=dev
+RUN npm install
 
 # Copy the server application source code to the server container
 COPY server ./
